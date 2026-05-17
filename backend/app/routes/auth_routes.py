@@ -16,7 +16,7 @@ async def register(user: UserRegister):
     if existing_user:
         raise HTTPException(
             status_code=400,
-            detail="Email already exists"
+            detail="User already signed up. Please login."
         )
 
     hashed_password = hash_password(user.password)
@@ -30,7 +30,7 @@ async def register(user: UserRegister):
     await users_collection.insert_one(new_user)
 
     return {
-        "message": "User registered successfully"
+        "message": "Signup successful"
     }
 
 @router.post("/login")
@@ -43,7 +43,7 @@ async def login(user: UserLogin):
     if not db_user:
         raise HTTPException(
             status_code=400,
-            detail="Invalid email"
+            detail="You should signup first."
         )
 
     valid_password = verify_password(
